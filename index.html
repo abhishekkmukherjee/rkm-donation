@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sponsor a Square Foot — Ramakrishna Temple, Ranchi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  /* ============================================================
+     EDIT ONLY THIS BLOCK — paste the temple's real details here
+     ============================================================ */
+  /* (the actual config is in the <script> at the bottom) */
+
+  :root{
+    --paper:#FBF6EC;
+    --ink:#2A1A12;
+    --maroon:#7A1F1F;
+    --maroon-dark:#5C1414;
+    --saffron:#E07B22;
+    --saffron-soft:#F4B860;
+    --line:#E4D7BE;
+    --muted:#8A7458;
+    --ok:#1B7A4B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--paper);color:var(--ink);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  body{display:flex;justify-content:center;padding:0 0 48px;}
+  .wrap{width:100%;max-width:440px;}
+
+  /* Header */
+  .top{background:linear-gradient(160deg,var(--maroon) 0%,var(--maroon-dark) 100%);
+    color:#fff;padding:30px 24px 26px;text-align:center;position:relative;overflow:hidden;}
+  .top::after{content:"";position:absolute;inset:-40% -10% auto;height:160px;
+    background:radial-gradient(circle at 50% 0%,rgba(244,184,96,.35),transparent 70%);}
+  .om{font-size:30px;color:var(--saffron-soft);line-height:1;margin-bottom:8px;}
+  .top h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;
+    font-size:25px;letter-spacing:.3px;line-height:1.25;}
+  .top .sub{font-size:13px;opacity:.85;margin-top:6px;letter-spacing:.4px;text-transform:uppercase;}
+  .rate-pill{display:inline-block;margin-top:16px;background:rgba(255,255,255,.12);
+    border:1px solid rgba(244,184,96,.5);border-radius:999px;
+    padding:7px 16px;font-size:14px;color:#fff;}
+  .rate-pill b{color:var(--saffron-soft);}
+
+  /* Card sections */
+  .card{background:#fff;margin:16px;border:1px solid var(--line);
+    border-radius:16px;padding:20px;box-shadow:0 1px 0 rgba(0,0,0,.02);}
+  .label{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:12px;}
+
+  /* Preset chips */
+  .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:11px;
+    padding:11px 6px;text-align:center;cursor:pointer;transition:.15s;font-size:15px;
+    font-weight:600;color:var(--ink);}
+  .chip small{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:2px;}
+  .chip:hover{border-color:var(--saffron-soft);}
+  .chip.active{background:var(--saffron);border-color:var(--saffron);color:#fff;}
+  .chip.active small{color:rgba(255,255,255,.85);}
+
+  /* Stepper */
+  .stepper{display:flex;align-items:center;gap:12px;margin-top:16px;}
+  .step-btn{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--line);
+    background:#fff;font-size:24px;color:var(--maroon);cursor:pointer;line-height:1;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .step-btn:active{background:var(--paper);}
+  .qty-input{flex:1;text-align:center;font-size:22px;font-weight:700;color:var(--ink);
+    border:1.5px solid var(--line);border-radius:12px;padding:10px;width:100%;
+    -moz-appearance:textfield;}
+  .qty-input::-webkit-outer-spin-button,.qty-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+  .qty-unit{font-size:13px;color:var(--muted);text-align:center;margin-top:8px;}
+
+  /* Total */
+  .total{background:linear-gradient(160deg,#FFF6E8,#FDEFD7);
+    border:1px solid var(--saffron-soft);border-radius:16px;
+    margin:16px;padding:20px;text-align:center;}
+  .total .cap{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--maroon);}
+  .total .amt{font-family:Georgia,serif;font-size:40px;font-weight:700;color:var(--maroon-dark);
+    line-height:1.1;margin:6px 0 2px;}
+  .total .words{font-size:13px;color:var(--muted);font-style:italic;min-height:18px;}
+
+  /* QR */
+  .qr-card{text-align:center;}
+  #qrcode{display:inline-block;padding:14px;background:#fff;border:1px solid var(--line);
+    border-radius:14px;margin:4px auto 2px;}
+  #qrcode img,#qrcode canvas{display:block;border-radius:4px;}
+  .qr-hint{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5;}
+  .qr-apps{font-size:12px;color:var(--muted);margin-top:4px;}
+  .vpa{margin-top:12px;font-size:14px;background:var(--paper);border:1px dashed var(--line);
+    border-radius:10px;padding:9px 12px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .vpa b{color:var(--ink);font-weight:600;word-break:break-all;}
+  .copy{border:none;background:none;color:var(--saffron);font-weight:700;cursor:pointer;font-size:13px;}
+
+  /* Buttons */
+  .btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+    border:none;border-radius:13px;padding:15px;font-size:16px;font-weight:700;
+    cursor:pointer;text-decoration:none;margin-top:11px;letter-spacing:.2px;}
+  .btn-pay{background:var(--maroon);color:#fff;}
+  .btn-pay:active{background:var(--maroon-dark);}
+  .btn-copy{background:#fff;color:var(--maroon);border:1.5px solid var(--saffron-soft);}
+  .btn-copy:active{background:var(--paper);}
+  .btn-share{background:#fff;color:var(--ok);border:1.5px solid #BFE3CE;}
+  .btn .ic{font-size:18px;}
+
+  /* UPI app buttons */
+  .apps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+  .app{display:flex;align-items:center;justify-content:center;gap:8px;
+    border-radius:13px;padding:14px 8px;font-size:15px;font-weight:700;
+    text-decoration:none;color:#fff;border:none;}
+  .app .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.9);}
+  .app-gpay{background:#1A73E8;}
+  .app-phonepe{background:#5F259F;}
+  .app-paytm{background:#012A6E;}
+  .app-bhim{background:#0B7D6E;}
+  .app-any{grid-column:1 / -1;background:var(--maroon);}
+
+  .note{font-size:12px;color:var(--muted);text-align:center;line-height:1.6;
+    padding:4px 28px 0;}
+  .footer{text-align:center;font-size:12px;color:var(--muted);padding:18px 24px 0;line-height:1.6;}
+  .footer .om2{color:var(--saffron);font-size:16px;}
+
+  .warn{display:none;background:#FDECEC;border:1px solid #F1B7B7;color:#9B2C2C;
+    font-size:12.5px;border-radius:10px;padding:10px 12px;margin:0 16px 4px;line-height:1.5;}
+  .warn.show{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="om">ॐ</div>
+    <h1 id="tName">Ramakrishna Temple, Ranchi</h1>
+    <div class="sub">Sponsor a Square Foot</div>
+    <div class="rate-pill">A divine offering of <b id="ratePill">₹2,100</b> per sq. ft.</div>
+  </div>
+
+  <div class="warn" id="warn">
+    Set-up needed: open this file and replace the UPI ID in the CONFIG block at the
+    bottom with the temple's real UPI ID. The QR will then work for live payments.
+  </div>
+
+  <div class="card">
+    <div class="label">Choose how many square feet</div>
+    <div class="chips" id="chips"></div>
+    <div class="stepper">
+      <button class="step-btn" id="minus" aria-label="decrease">−</button>
+      <input class="qty-input" id="qty" type="number" inputmode="numeric" min="1" value="1" />
+      <button class="step-btn" id="plus" aria-label="increase">+</button>
+    </div>
+    <div class="qty-unit">square feet</div>
+  </div>
+
+  <div class="total">
+    <div class="cap">Your Contribution</div>
+    <div class="amt" id="amt">₹2,100</div>
+    <div class="words" id="words">Rupees Two Thousand One Hundred only</div>
+  </div>
+
+  <div class="card qr-card">
+    <div class="label">Scan &amp; Pay with any UPI app</div>
+    <div id="qrcode"></div>
+    <div class="qr-hint">Open <b>GPay / PhonePe / Paytm / BHIM</b> → Scan this QR.<br>The amount fills in automatically.</div>
+
+    <div class="vpa">
+      <span>UPI ID:&nbsp;<b id="vpaText">—</b></span>
+    </div>
+    <button class="btn btn-copy" id="copyBtn"><span class="ic">⧉</span> Copy UPI ID</button>
+
+    <a class="btn btn-pay" id="payBtn" href="#"><span class="ic">📲</span> Pay <span id="payAmt">₹2,100</span> via UPI</a>
+
+    <div class="apps">
+      <a class="app app-gpay"    id="appGpay"    href="#"><span class="dot"></span> GPay</a>
+      <a class="app app-phonepe" id="appPhonepe" href="#"><span class="dot"></span> PhonePe</a>
+      <a class="app app-paytm"   id="appPaytm"   href="#"><span class="dot"></span> Paytm</a>
+      <a class="app app-bhim"    id="appBhim"    href="#"><span class="dot"></span> BHIM</a>
+      <a class="app app-any"     id="appAny"     href="#"><span class="dot"></span> Any other UPI app</a>
+    </div>
+
+    <div class="note">On a phone, tap “Pay via UPI” (or pick an app above) to open your UPI app with the amount filled in. On a computer, scan the QR or copy the UPI ID above and pay manually.</div>
+
+    <button class="btn btn-share" id="shareBtn"><span class="ic">↗</span> Share on WhatsApp</button>
+  </div>
+
+  <div class="footer">
+    <div class="om2">卐 &nbsp; ॐ &nbsp; 卐</div>
+    By participating in this sacred work, you become part of a spiritual legacy
+    that will inspire generations to come.
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — EDIT THESE 4 LINES ONLY
+   ============================================================ */
+const CONFIG = {
+  upiId:      "ramakrishnamissionas.99856572@hdfcbank",  // ashram UPI ID
+  payeeName:  "Ramakrishna Mission Ashram",   // ← name shown in the donor's UPI app
+  templeName: "Ramakrishna Temple, Ranchi",
+  ratePerSqFt: 2100
+};
+const PRESETS = [1, 5, 11, 21, 51, 108];     // auspicious quick amounts
+/* ============================================================ */
+
+const $ = id => document.getElementById(id);
+const inr = n => "₹" + Number(n).toLocaleString("en-IN");
+let qrObj = null;
+
+// ---- amount in words (Indian system) ----
+function inWords(num){
+  if(num === 0) return "Zero";
+  const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+    "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+  const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+  const two=n=> n<20 ? a[n] : b[Math.floor(n/10)] + (n%10?" "+a[n%10]:"");
+  const three=n=>{ let s=""; if(n>99){s+=a[Math.floor(n/100)]+" Hundred"; if(n%100)s+=" ";} if(n%100)s+=two(n%100); return s; };
+  let out="", crore=Math.floor(num/10000000); num%=10000000;
+  let lakh=Math.floor(num/100000); num%=100000;
+  let thou=Math.floor(num/1000); num%=1000;
+  if(crore) out+=three(crore)+" Crore ";
+  if(lakh)  out+=three(lakh)+" Lakh ";
+  if(thou)  out+=three(thou)+" Thousand ";
+  if(num)   out+=three(num);
+  return out.trim();
+}
+
+// Build the UPI query string once; reuse for the generic link and every app.
+function upiParams(amount){
+  const p = new URLSearchParams();
+  p.set("pa", CONFIG.upiId);
+  p.set("pn", CONFIG.payeeName);
+  p.set("am", Number(amount).toFixed(2));   // apps expect 2-decimal amount
+  p.set("cu", "INR");
+  p.set("tn", "Temple Sq.Ft. Sponsorship");
+  return p.toString();
+}
+
+function upiLink(amount){
+  return "upi://pay?" + upiParams(amount);   // standard UPI link — compatible with all apps
+}
+
+// App-specific deep links. Each app registers its own scheme; if the app is
+// installed the link opens it directly, otherwise it falls back to the chooser.
+function appLinks(amount){
+  const q = upiParams(amount);
+  return {
+    gpay:    "tez://upi/pay?"   + q,   // Google Pay
+    phonepe: "phonepe://pay?"   + q,
+    paytm:   "paytmmp://pay?"   + q,
+    bhim:    "bhim://upi/pay?"  + q,
+    any:     "upi://pay?"       + q
+  };
+}
+
+let qty = 1;
+
+function render(){
+  qty = Math.max(1, Math.floor(Number($("qty").value) || 1));
+  const amount = qty * CONFIG.ratePerSqFt;
+
+  $("amt").textContent = inr(amount);
+  $("payAmt").textContent = inr(amount);
+  $("words").textContent = "Rupees " + inWords(amount) + " only";
+
+  // active chip
+  document.querySelectorAll(".chip").forEach(c=>{
+    c.classList.toggle("active", Number(c.dataset.v) === qty);
+  });
+
+  // single generic UPI link for the main button and the QR
+  const link = upiLink(amount);
+  $("payBtn").href = link;
+
+  // per-app deep links
+  const al = appLinks(amount);
+  $("appGpay").href    = al.gpay;
+  $("appPhonepe").href = al.phonepe;
+  $("appPaytm").href   = al.paytm;
+  $("appBhim").href    = al.bhim;
+  $("appAny").href     = al.any;
+
+  $("qrcode").innerHTML = "";
+  qrObj = new QRCode($("qrcode"), {
+    text: link, width: 196, height: 196,
+    colorDark:"#2A1A12", colorLight:"#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+}
+
+function shareWhatsApp(){
+  const amount = qty * CONFIG.ratePerSqFt;
+  const msg =
+`🙏 A Divine Opportunity to Contribute 🙏
+
+The construction of the new ${CONFIG.templeName} is progressing.
+
+Every square foot can be sponsored for ${inr(CONFIG.ratePerSqFt)}.
+I am sponsoring ${qty} sq. ft. — a contribution of ${inr(amount)}.
+
+You may contribute any number of square feet as per your devotion.
+Kindly share this message with family and friends. 🙏`;
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+// ---- wire up ----
+function init(){
+  $("tName").textContent = CONFIG.templeName;
+  $("ratePill").textContent = inr(CONFIG.ratePerSqFt);
+  $("vpaText").textContent = CONFIG.upiId;
+  if(CONFIG.upiId.startsWith("REPLACE")) $("warn").classList.add("show");
+
+  // build preset chips
+  const chipsEl = $("chips");
+  PRESETS.forEach(v=>{
+    const d=document.createElement("div");
+    d.className="chip"; d.dataset.v=v;
+    d.innerHTML = v + ` sq ft<small>${inr(v*CONFIG.ratePerSqFt)}</small>`;
+    d.onclick=()=>{ $("qty").value=v; render(); };
+    chipsEl.appendChild(d);
+  });
+
+  // Main "Pay via UPI" button: open the UPI app reliably on phones,
+  // and guide the user to scan/copy on a desktop where no UPI app exists.
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  $("payBtn").addEventListener("click", (e)=>{
+    const amount = qty * CONFIG.ratePerSqFt;
+    const link = upiLink(amount);
+    if(!isMobile){
+      e.preventDefault();
+      alert("To pay " + inr(amount) + ", open this page on your phone, or scan the QR code / copy the UPI ID and pay from any UPI app.");
+      return;
+    }
+    // On a phone: navigate to the UPI scheme so the app chooser opens.
+    e.preventDefault();
+    window.location.href = link;
+  });
+
+  $("minus").onclick = ()=>{ $("qty").value = Math.max(1, qty-1); render(); };
+  $("plus").onclick  = ()=>{ $("qty").value = qty+1; render(); };
+  $("qty").oninput   = render;
+  $("shareBtn").onclick = shareWhatsApp;
+  $("copyBtn").onclick = ()=>{
+    navigator.clipboard?.writeText(CONFIG.upiId);
+    const t=$("copyBtn"); t.innerHTML='<span class="ic">✓</span> Copied';
+    setTimeout(()=>t.innerHTML='<span class="ic">⧉</span> Copy UPI ID',1500);
+  };
+
+  render();
+}
+init();
+</script>
+</body>
+</html>
