@@ -226,13 +226,13 @@ function inWords(num){
 }
 
 // Build the UPI query string once; reuse for the generic link and every app.
+// Kept minimal — same data a manual payment sends — to avoid any payee-name
+// mismatch. We do NOT force "pn" so the app uses the account's real verified name.
 function upiParams(amount){
   const p = new URLSearchParams();
   p.set("pa", CONFIG.upiId);
-  p.set("pn", CONFIG.payeeName);
-  p.set("am", Number(amount).toFixed(2));   // apps expect 2-decimal amount
+  p.set("am", String(amount));
   p.set("cu", "INR");
-  p.set("tn", "Temple Sq.Ft. Sponsorship");
   return p.toString();
 }
 
