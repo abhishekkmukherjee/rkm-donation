@@ -169,15 +169,7 @@
 
     <a class="btn btn-pay" id="payBtn" href="#"><span class="ic">📲</span> Pay <span id="payAmt">₹2,100</span> via UPI</a>
 
-    <div class="apps">
-      <a class="app app-gpay"    id="appGpay"    href="#"><span class="dot"></span> GPay</a>
-      <a class="app app-phonepe" id="appPhonepe" href="#"><span class="dot"></span> PhonePe</a>
-      <a class="app app-paytm"   id="appPaytm"   href="#"><span class="dot"></span> Paytm</a>
-      <a class="app app-bhim"    id="appBhim"    href="#"><span class="dot"></span> BHIM</a>
-      <a class="app app-any"     id="appAny"     href="#"><span class="dot"></span> Any other UPI app</a>
-    </div>
-
-    <div class="note">On a phone, tap “Pay via UPI” (or pick an app above) to open your UPI app with the amount filled in. On a computer, scan the QR or copy the UPI ID above and pay manually.</div>
+    <div class="note">On a phone, tap “Pay via UPI” to open your UPI app with the amount filled in. On a computer, scan the QR or copy the UPI ID above and pay manually.</div>
 
     <button class="btn btn-share" id="shareBtn"><span class="ic">↗</span> Share on WhatsApp</button>
   </div>
@@ -237,20 +229,7 @@ function upiParams(amount){
 }
 
 function upiLink(amount){
-  return "upi://pay?" + upiParams(amount);   // standard UPI link — compatible with all apps
-}
-
-// App-specific deep links. Each app registers its own scheme; if the app is
-// installed the link opens it directly, otherwise it falls back to the chooser.
-function appLinks(amount){
-  const q = upiParams(amount);
-  return {
-    gpay:    "tez://upi/pay?"   + q,   // Google Pay
-    phonepe: "phonepe://pay?"   + q,
-    paytm:   "paytmmp://pay?"   + q,
-    bhim:    "bhim://upi/pay?"  + q,
-    any:     "upi://pay?"       + q
-  };
+  return "upi://pay?" + upiParams(amount);   // standard UPI link — opens any UPI app
 }
 
 let qty = 1;
@@ -268,17 +247,9 @@ function render(){
     c.classList.toggle("active", Number(c.dataset.v) === qty);
   });
 
-  // single generic UPI link for the main button and the QR
+  // single UPI link for the button and the QR
   const link = upiLink(amount);
   $("payBtn").href = link;
-
-  // per-app deep links
-  const al = appLinks(amount);
-  $("appGpay").href    = al.gpay;
-  $("appPhonepe").href = al.phonepe;
-  $("appPaytm").href   = al.paytm;
-  $("appBhim").href    = al.bhim;
-  $("appAny").href     = al.any;
 
   $("qrcode").innerHTML = "";
   qrObj = new QRCode($("qrcode"), {
